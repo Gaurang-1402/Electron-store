@@ -1,23 +1,19 @@
-import React, { useEffect } from "react"
-import { Link } from "react-router-dom"
-import { Row, Col, ListGroup, Image, Form, Button, Card } from "react-bootstrap"
-import { useDispatch, useSelector } from "react-redux"
-import Message from "../components/Message"
-import { addToCart, removeFromCart } from "../actions/cartActions"
+import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
+import Message from '../components/Message'
+import { addToCart, removeFromCart } from '../actions/cartActions'
 
 const CartScreen = ({ match, location, history }) => {
   const productId = match.params.id
 
-  const qty = location.search ? Number(location.search.split("=")[1]) : 1
+  const qty = location.search ? Number(location.search.split('=')[1]) : 1
 
   const dispatch = useDispatch()
 
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
-
-  const removeFromCartHandler = (id) => {
-      dispatch(removeFromCart(id))
-  }
 
   useEffect(() => {
     if (productId) {
@@ -25,8 +21,12 @@ const CartScreen = ({ match, location, history }) => {
     }
   }, [dispatch, productId, qty])
 
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id))
+  }
+
   const checkoutHandler = () => {
-    history.push("/login?redirect=shipping")
+    history.push('/login?redirect=shipping')
   }
 
   return (
@@ -35,7 +35,7 @@ const CartScreen = ({ match, location, history }) => {
         <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (
           <Message>
-            Your Cart is empty <Link to='/'>Go back</Link>
+            Your cart is empty <Link to='/'>Go Back</Link>
           </Message>
         ) : (
           <ListGroup variant='flush'>
@@ -91,7 +91,7 @@ const CartScreen = ({ match, location, history }) => {
               </h2>
               $
               {cartItems
-                .reduce((acc, item) => (acc + item.qty) * item.price, 0)
+                .reduce((acc, item) => acc + item.qty * item.price, 0)
                 .toFixed(2)}
             </ListGroup.Item>
             <ListGroup.Item>
@@ -101,13 +101,12 @@ const CartScreen = ({ match, location, history }) => {
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >
-                Proceed to Checkout
+                Proceed To Checkout
               </Button>
             </ListGroup.Item>
           </ListGroup>
         </Card>
       </Col>
-      <Col md={2}></Col>
     </Row>
   )
 }
